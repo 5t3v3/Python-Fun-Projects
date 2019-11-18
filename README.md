@@ -1,5 +1,5 @@
 # Python-projects
 
-Learning Python
+*Learning Python
 
-Programs created for understanding python and also for personal hobby
+#.  Programs created for understanding python and also for personal hobby
