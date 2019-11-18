@@ -2,4 +2,4 @@
 
 Learning Python
 
-Working database
+Programs created for understanding python and also for personal hobby
