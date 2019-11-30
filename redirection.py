@@ -12,7 +12,7 @@ for i in f_data:
         
         xy=str(j) # payload loop
         xx=str(i)   #url loop
-        r='https://'xx+'/'+xy # concatenating url with payload
+        r=xx+'/'+xy # concatenating url with payload
         req=requests.get(r) #http request (GET) with the combined string
         print("\nThe request is ",r)
         out=req.status_code         # http response code of the request
