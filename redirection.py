@@ -19,6 +19,5 @@ for i in f_data:
         out=req.status_code         # http response code of the request
         print ("Http Response code is : ",out)
 
-
 p.close()
 f.close()
