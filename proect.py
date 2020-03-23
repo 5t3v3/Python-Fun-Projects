@@ -1,4 +1,6 @@
 import numpy as np
+import math
+import matplotlib.pyplot as plt
 
 
 ##### Input all the terms, mass,c,ro,area,g,initial velocity
@@ -9,25 +11,34 @@ mass=float(input("ENter he mass: "))
 delt=float(input("Enter the time interval: "))      #time interval
 g=float(9.8)
 v0=float(input("Enter the initial velocity: "))
-theta=float(input("Enter the angle"))#angle
+theta_d=float(input("Enter the angle"))#angle
 i=1
 N=5
-t=0.0     #time ?????? 
+t=0  #time ?????? 
 
-v0y=v0*np.math.sin(theta)
+theta=np.radians(theta_d)
 
+v0y=v0*math.sin(theta)
 
-vx=v0*np.math.cos(theta)    #velocity in x direction\
-vy=v0y-(g*t)  #velocity in y direction
+vx=v0*math.cos(theta)
 
-x=0#initial coordinates
-y=0#initial y cordinate
+x=0.0#initial coordinates
+y=0.0#initial y cordinate
 
-t=0#initial t
-tmax=N*delt
+ar_x=[]
+ar_y=[]
+
+tmax=10
 
 
 # functions
+
+
+def velocity_y(v0y,g,t):
+    vy=v0y-(g*t)  #velocity in y direction
+    return vy
+
+
 def D(ro,area,c):       
     DD=float((ro*area*c)/2)
     return DD
@@ -54,33 +65,39 @@ def dely(vy,delt,ay):
 
 
 while t<tmax:
+    vy=velocity_y(v0y,g,t)
     velocity=v(vx,vy)
     D_val=D(ro,area,c)
     accel_x=ax(D_val,mass,v0,vx)
     accel_y=ay(D_val,mass,velocity,vy,g)
-
+    
     print("Attempt number : ",i)
     print("\n")
+    print("Initial value of X cordinate :",x)
+    print("Initial value of y cordinate :",y)
+    print("\n")
+
+
+    print("New x velocity = ",vx)
+    print("New y velocity = ",vy)
+    print("\n")
+
 
     print("Acceleration in x direction = ",accel_x)
     print("Acceleration in y direction = ",accel_y)
     print("\n")
 
 
-    new_x_v=vx+accel_x*delt # vx+del vx
-    new_y_v=vy+accel_y*delt #  vy+del vy
+    vx=vx+accel_x*delt # vx+del vx
+    vy=vy+accel_y*delt #  vy+del vy
 
-    print("New x velocity = ",new_x_v)
-    print("New y velocity = ",new_y_v)
-    print("\n")
 
-    new_x_co=x+delx(vx,delt,accel_x)
-    new_y_co=y+dely(vy,delt,accel_y)
-
-    print("New x coordinates = ",new_x_co)
-    print("New y coordinates = ",new_y_co)
-    print("\n")
+    x=x+delx(vx,delt,accel_x)
+    y=y+dely(vy,delt,accel_y)
 
     t=t+delt
     i=i+1
     print("\n")
+
+
+
