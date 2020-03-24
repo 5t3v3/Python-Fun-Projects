@@ -1,4 +1,3 @@
-import numpy as np
 import math
 import matplotlib.pyplot as plt
 
@@ -8,96 +7,73 @@ ro=float(input("Enter the density of air: "))
 c=float(input("Enter the drag coefficient: "))
 area=float(input("Enter the area of the body:"))
 mass=float(input("ENter he mass: "))
-delt=float(input("Enter the time interval: "))      #time interval
-g=float(9.8)
+dt=float(input("Enter the time interval: "))      #time interval
 v0=float(input("Enter the initial velocity: "))
-theta_d=float(input("Enter the angle"))#angle
-i=1
-N=5
+angle=float(input("Enter the angle"))#angle
+
+g=9.8
 t=0  #time ?????? 
-
-theta=np.radians(theta_d)
-
-v0y=v0*math.sin(theta)
-
-vx=v0*math.cos(theta)
-
-x=0.0#initial coordinates
-y=0.0#initial y cordinate
-
-ar_x=[]
-ar_y=[]
-
 tmax=10
+
+theta=(3.14*angle)/180   #angle in radians
+
+
+vy=[v0*math.sin(theta)] 
+
+vx=[v0*math.cos(theta)]
+
+
+x=[0]#initial coordinates
+y=[0]#initial y cordinate
+
 
 
 # functions
 
-
-def velocity_y(v0y,g,t):
-    vy=v0y-(g*t)  #velocity in y direction
-    return vy
-
-
-def D(ro,area,c):       
+def DE(ro,area,c):       # drag 
     DD=float((ro*area*c)/2)
     return DD
 
-def v(vx,vy):
-    vv=np.math.sqrt((vx**2)+(vy**2))
-    return vv
+p=0
 
-def ax(D,m,v,vx):
-    axx=-(D/m)*v*vx
-    return axx
+accel_x=[]
+accel_y=[]
 
-def ay(D,m,v,vy,g):
-    ayy=-g-(D/m)*v*vy
-    return ayy
-
-def delx(vx,delt,ax): #
-    delta_x=vx*delt+(0.5*ax*(delt**2))
-    return delta_x
-
-def dely(vy,delt,ay):
-    delta_y=vy*delt+(0.5*ay*(delt**2))
-    return delta_y
-
-
-while t<tmax:
-    vy=velocity_y(v0y,g,t)
-    velocity=v(vx,vy)
-    D_val=D(ro,area,c)
-    accel_x=ax(D_val,mass,v0,vx)
-    accel_y=ay(D_val,mass,velocity,vy,g)
+while y[p]>=0:
     
-    print("Attempt number : ",i)
-    print("\n")
-    print("Initial value of X cordinate :",x)
-    print("Initial value of y cordinate :",y)
-    print("\n")
+    D=DE(ro,area,c)  # D in eqn
+    
+    vxx=float(vx[p]) # x coponent of velocity at pth position in list
+    vyy=float(vy[p]) # y component of velocity at pth position in list
+  
+    ayy=-g-((D/mass)*vyy) #acceleration y component
+    axx=-(D/mass)*vxx   #acceleration x component
+
+    accel_x.append(axx) #acceleration in x direction
+    accel_y.append(ayy)    #acceleration in y direction
+
+    delta_x=(vxx*dt)+(accel_x[p]*(dt**2)/2)  # dx
+    delta_y=(vyy*dt)+(accel_y[p]*(dt**2)/2)   #dy
+    
+
+    accelxx=accel_x[p]
+    accelyy=accel_y[p]
+    
+    
+    vx.append(vxx+(accelxx*dt) )# vx + delta vx
+    vy.append(vyy+(accelyy*dt)) #  vy + delta vy
 
 
-    print("New x velocity = ",vx)
-    print("New y velocity = ",vy)
-    print("\n")
+    x.append(x[p]+delta_x) #adding the value of x to list
+    y.append(y[p]+delta_y) #adding the value of y to list
 
+    t=t+dt
+    p=p+1
 
-    print("Acceleration in x direction = ",accel_x)
-    print("Acceleration in y direction = ",accel_y)
-    print("\n")
+####### Graph
 
-
-    vx=vx+accel_x*delt # vx+del vx
-    vy=vy+accel_y*delt #  vy+del vy
-
-
-    x=x+delx(vx,delt,accel_x)
-    y=y+dely(vy,delt,accel_y)
-
-    t=t+delt
-    i=i+1
-    print("\n")
-
-
-
+plt.plot(x,y)
+plt.grid()
+plt.ylabel("Y axis")
+plt.xlabel("X axis")
+plt.show()
