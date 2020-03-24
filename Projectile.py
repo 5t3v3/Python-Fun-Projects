@@ -1,3 +1,5 @@
+# Program to show the path of projectile under air resistance
+
 import math
 import matplotlib.pyplot as plt
 
